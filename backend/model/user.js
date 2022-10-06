@@ -1,18 +1,5 @@
 const mongoose = require("mongoose");
 
-const taskSchema=new mongoose.Schema({
-   title:{
-      type:String,
-   },
-   description:{
-      type:String,
-   },
-   deadline:{
-      type:Date,
-      default:new Date(Date.now()+24*60*60*1000)
-   }
-});
-
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -26,7 +13,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  todolist:[taskSchema]
+  todolist:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"task"
+  },]
 });
 
 module.exports = mongoose.model("User", UserSchema);

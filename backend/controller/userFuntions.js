@@ -1,4 +1,5 @@
 const User = require("../model/user");
+const Task = require("../model/task");
 const jwt = require("jsonwebtoken");
 
 // login user
@@ -158,24 +159,34 @@ exports.deleteAccount = async (req, res) => {
   }
 };
 
-
 // add your task in todolist
 
-exports.addTasks=async(req,res)=>{
+exports.addTasks = async (req, res) => {
   try {
-    const user=req.user;
+    const user = req.user;
 
+    const { title, description, deadline } = req.body;
 
-    const {title,description,deadline}=req.body;
-    
-    user.todolist.push({title:title,description:description,deadline:new Date(deadline)});
+    if ((!title, !description)) {
+      return res.status(404).json({
+        success: false,
+        message: "please provide all data",
+      });
+    }
+    const task = await Task.create({
+      title: title,
+      description: description,
+      deadline: new Date(deadline),
+    });
+    await task.save();
+
+    user.todolist.push(task._id);
     await user.save();
 
     res.status(201).json({
-      success:true,
-      message:"your task is added"
-    })
-
+      success: true,
+      message: "your task is added",
+    });
   } catch (error) {
     res.status(404).json({
       success: false,
@@ -184,42 +195,33 @@ exports.addTasks=async(req,res)=>{
   }
 };
 
-
-
 // delete task of the user
 
-exports.deleteTask=async(req,res)=>{
+exports.deleteTask = async (req, res) => {
   try {
-    
-    const userId=req.params.id;
+    const userId = req.params.id;
 
-    const user=req.user;
+    const task=await Task.findById(userId);
+    await task.remove();
 
-    let index=-1;
-    console.log(typeof(userId));
-    index=await user.todolist.findOne(userId);
-    console.log(index);
-    index=await user.todolist.indexOf(index);
+    const user = req.user;
+    const index=await user.todolist.indexOf(userId);
 
-    console.log(index);
-    console.log(userId);
-
-    if(index<0)
+    if(!index)
     {
      return res.status(200).json({
         success:false,
         message:"your data not exists"
       })
     }
-     
+
     await user.todolist.splice(index,1);
     await user.save();
 
     res.status(200).json({
-      success:true,
-      message:"your task is deleted"
-    })
-
+      success: true,
+      message: "your task is deleted",
+    });
   } catch (error) {
     res.status(404).json({
       success: false,
@@ -228,26 +230,20 @@ exports.deleteTask=async(req,res)=>{
   }
 };
 
-
-
 // get user data
 
-exports.getUserData=async(req,res)=>{
+exports.getUserData = async (req, res) => {
   try {
-
-    const user=req.user;
+    const user = req.user;
 
     res.status(200).json({
-      success:true,
-      user
-    })
-    
+      success: true,
+      user,
+    });
   } catch (error) {
     res.status(404).json({
       success: false,
       message: error.message,
     });
   }
-}
-
-
+};
