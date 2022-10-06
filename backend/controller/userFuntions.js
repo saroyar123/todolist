@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 // login user
 exports.login = async (req, res) => {
   try {
-    const name = req.body.name;
     const password = req.body.password;
     const email = req.body.email;
 
@@ -138,7 +137,7 @@ exports.logout = async (req, res) => {
 
 exports.deleteAccount = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = req.user;
     await user.remove();
 
     res
@@ -158,3 +157,97 @@ exports.deleteAccount = async (req, res) => {
     });
   }
 };
+
+
+// add your task in todolist
+
+exports.addTasks=async(req,res)=>{
+  try {
+    const user=req.user;
+
+
+    const {title,description,deadline}=req.body;
+    
+    user.todolist.push({title:title,description:description,deadline:new Date(deadline)});
+    await user.save();
+
+    res.status(201).json({
+      success:true,
+      message:"your task is added"
+    })
+
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+// delete task of the user
+
+exports.deleteTask=async(req,res)=>{
+  try {
+    
+    const userId=req.params.id;
+
+    const user=req.user;
+
+    let index=-1;
+    console.log(typeof(userId));
+    index=await user.todolist.findOne(userId);
+    console.log(index);
+    index=await user.todolist.indexOf(index);
+
+    console.log(index);
+    console.log(userId);
+
+    if(index<0)
+    {
+     return res.status(200).json({
+        success:false,
+        message:"your data not exists"
+      })
+    }
+     
+    await user.todolist.splice(index,1);
+    await user.save();
+
+    res.status(200).json({
+      success:true,
+      message:"your task is deleted"
+    })
+
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+// get user data
+
+exports.getUserData=async(req,res)=>{
+  try {
+
+    const user=req.user;
+
+    res.status(200).json({
+      success:true,
+      user
+    })
+    
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+

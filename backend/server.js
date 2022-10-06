@@ -1,6 +1,6 @@
 const express=require("express");
 const { Authitication } = require("./config/auth");
-const { login, register, logout, deleteAccount } = require("./controller/userFuntions");
+const { login, register, logout, deleteAccount, addTasks, deleteTask, getUserData } = require("./controller/userFuntions");
 const {databaseconnect}=require("./database/moncon");
 const User=require("./model/user");
 const cookieparser=require("cookie-parser");
@@ -27,6 +27,9 @@ app.get("/login",login);
 app.post("/register",register);
 app.get("/logout",Authitication,logout);
 app.get("/deleteAccount",Authitication,deleteAccount);
+app.post("/addTask",Authitication,addTasks);
+app.delete("/deleteTask/:id",Authitication,deleteTask);
+app.get("/getUserData",Authitication,getUserData);
 
 app.listen(process.env.PORT,()=>{
     console.log("server is running at port 4000")
