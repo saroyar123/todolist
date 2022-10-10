@@ -11,14 +11,14 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      return res.status(200).json({
+      return res.status(404).json({
         success: false,
         message: "Register first",
       });
     }
 
     if (user && user.password !== password) {
-      return res.status(200).json({
+      return res.status(404).json({
         success: false,
         message: "wrong password",
       });
@@ -201,21 +201,20 @@ exports.deleteTask = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    const task=await Task.findById(userId);
+    const task = await Task.findById(userId);
     await task.remove();
 
     const user = req.user;
-    const index=await user.todolist.indexOf(userId);
+    const index = await user.todolist.indexOf(userId);
 
-    if(!index)
-    {
-     return res.status(200).json({
-        success:false,
-        message:"your data not exists"
-      })
+    if (!index) {
+      return res.status(200).json({
+        success: false,
+        message: "your data not exists",
+      });
     }
 
-    await user.todolist.splice(index,1);
+    await user.todolist.splice(index, 1);
     await user.save();
 
     res.status(200).json({
@@ -236,8 +235,16 @@ exports.getUserData = async (req, res) => {
   try {
     const user = req.user;
 
+    if(!user){
+      return res.status(404).json({
+        success:false,
+        message:"you are not authiticated"
+      })
+    }
+
     res.status(200).json({
       success: true,
+      message:"user data",
       user,
     });
   } catch (error) {

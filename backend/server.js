@@ -16,20 +16,19 @@ const app=express();
 app.use(express.json());
 app.use(cookieparser());
 
+const router=express.Router();
 
-const heading=`<h1>hello</h1>`;
- 
-app.get("/",Authitication,(req,res)=>{
-  res.send(heading);
-})
 
-app.get("/login",login);
-app.post("/register",register);
-app.get("/logout",Authitication,logout);
-app.get("/deleteAccount",Authitication,deleteAccount);
-app.post("/addTask",Authitication,addTasks);
-app.delete("/deleteTask/:id",Authitication,deleteTask);
-app.get("/getUserData",Authitication,getUserData);
+
+router.post("/login",login);
+router.post("/register",register);
+router.get("/logout",Authitication,logout);
+router.get("/deleteAccount",Authitication,deleteAccount);
+router.post("/addTask",Authitication,addTasks);
+router.delete("/deleteTask/:id",Authitication,deleteTask);
+router.get("/getUserData",Authitication,getUserData);
+
+app.use("/api",router);
 
 app.listen(process.env.PORT,()=>{
     console.log("server is running at port 4000")

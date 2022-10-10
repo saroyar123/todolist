@@ -7,7 +7,7 @@ exports.Authitication = async (req, res, next) => {
 
     if(!token)
     {
-        return res.status(200).json({
+        return res.status(404).json({
             success:false,
             message:"login first"
         })
