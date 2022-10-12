@@ -17,15 +17,15 @@ function App() {
   },[dispatch])
 
   const {isAuthitication}=useSelector((state)=>state.loadUser);
-  console.log(isAuthitication);
+  
+  // console.log(isAuthitication);
   
 
   return (
     <Router>
       <Routes>
         <Route path='/' element={isAuthitication?<User/>:<Login/>} />
-        <Route path='/login' element={<Login/>} />
-        <Route path='/register' element={<Register/>} />
+        <Route path='/register' element={isAuthitication?<User/>:<Register/>} />
       </Routes> 
     </Router>
   );

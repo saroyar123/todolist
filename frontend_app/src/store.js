@@ -1,11 +1,12 @@
 import {configureStore} from "@reduxjs/toolkit"
-import { loadUser, user } from "./Reducer/user";
+import { loadUser, user, userMethod } from "./Reducer/user";
 
 
 const store=configureStore({
     reducer:{
        user:user,
-       loadUser:loadUser
+       loadUser:loadUser,
+       userMethod:userMethod
     },
 });
 

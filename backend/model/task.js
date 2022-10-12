@@ -7,10 +7,10 @@ const taskSchema=new mongoose.Schema({
    description:{
       type:String,
    },
-   deadline:{
-      type:Date,
-      default:new Date(Date.now()+24*60*60*1000)
-   }
+   // deadline:{
+   //    type:Date,
+   //    default:new Date(Date.now()+24*60*60*1000)
+   // }
 });
 
 module.exports=mongoose.model("task",taskSchema);

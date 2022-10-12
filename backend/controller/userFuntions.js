@@ -56,7 +56,7 @@ exports.register = async (req, res) => {
     const email = req.body.email;
 
     if (!name || !password || !email) {
-      return res.status(200).json({
+      return res.status(404).json({
         success: false,
         message: "gives all inputs",
       });
@@ -65,7 +65,7 @@ exports.register = async (req, res) => {
     const user = await User.findOne({ email: email });
 
     if (user) {
-      return res.status(200).json({
+      return res.status(404).json({
         success: true,
         message: "user already exist",
       });
@@ -165,7 +165,9 @@ exports.addTasks = async (req, res) => {
   try {
     const user = req.user;
 
-    const { title, description, deadline } = req.body;
+    const { title, description } = req.body;
+    console.log(title);
+    console.log(description);
 
     if ((!title, !description)) {
       return res.status(404).json({
@@ -175,8 +177,7 @@ exports.addTasks = async (req, res) => {
     }
     const task = await Task.create({
       title: title,
-      description: description,
-      deadline: new Date(deadline),
+      description: description
     });
     await task.save();
 
@@ -233,7 +234,7 @@ exports.deleteTask = async (req, res) => {
 
 exports.getUserData = async (req, res) => {
   try {
-    const user = req.user;
+    const user = await User.findOne(req.user).populate("todolist");
 
     if(!user){
       return res.status(404).json({

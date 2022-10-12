@@ -41,3 +41,41 @@ export const loadUser=createReducer({},{
         state.error=action.playload
     }
 })
+
+
+// for user methods
+export const userMethod=createReducer({},{
+
+    registerRequest:(state)=>{
+        state.loading=true
+    },
+
+    registerSuccess:(state,action)=>{
+        state.loading=false
+        state.message=action.playload
+    },
+
+    registerFailure:(state,action)=>{
+        state.loading=false
+        state.message=action.playload
+    },
+
+
+    addTaskRequest:(state)=>{
+        state.loading=true
+    },
+
+    addTaskSuccess:(state,action)=>{
+        state.loading=false
+        state.message=action.playload
+    },
+
+    addTaskFailure:(state,action)=>{
+        state.loading=false
+        state.message=action.playload
+    }
+
+
+
+
+})

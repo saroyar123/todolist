@@ -40,3 +40,49 @@ export const loadUser = () => async (dispatch) => {
     });
   }
 };
+
+
+// for register
+export const userRegister=(name,email,password)=>async(dispatch)=>{
+  try {
+    dispatch({
+      type:"registerRequest"
+    })
+
+    const {data}=await axios.post("/api/register",{name,email,password});
+
+    dispatch({
+      type:"registerSuccess",
+      playload:data.message
+    })
+    
+  } catch (error) {
+    dispatch({
+      type: "loadUserFailure",
+      playload: error.response.data.message,
+    });
+  }
+}
+
+// add task of the login user
+
+export const addTask=(title,description)=>async(dispatch)=>{
+  try {
+    dispatch({
+      type:"addTaskRequest"
+    })
+
+    const {data}=await axios.post("/api/addTask",{title,description});
+
+    dispatch({
+      type:"addTaskSuccess",
+      playload:data.message
+    })
+
+  } catch (error) {
+    dispatch({
+      type: "addTaskFailure",
+      playload: error.response.data.message,
+    });
+  }
+}
