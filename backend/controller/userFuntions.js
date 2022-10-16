@@ -8,7 +8,7 @@ exports.login = async (req, res) => {
     const password = req.body.password;
     const email = req.body.email;
 
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email }).populate("todolist");
 
     if (!user) {
       return res.status(404).json({
@@ -91,8 +91,7 @@ exports.register = async (req, res) => {
     res.status(200).cookie("token", token, option).json({
       success: true,
       message: "user created",
-      newUser,
-      token,
+      user:newUser,
     });
   } catch (error) {
     res.status(404).json({
@@ -139,6 +138,14 @@ exports.logout = async (req, res) => {
 exports.deleteAccount = async (req, res) => {
   try {
     const user = req.user;
+    const todolist=user.todolist;
+   
+    todolist.map(async(task,index)=>{
+      const deleteTask=await Task.findOne(task._id);
+      await deleteTask.remove();
+    })
+  
+
     await user.remove();
 
     res
@@ -255,3 +262,4 @@ exports.getUserData = async (req, res) => {
     });
   }
 };
+

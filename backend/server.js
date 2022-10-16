@@ -1,6 +1,6 @@
 const express=require("express");
 const { Authitication } = require("./config/auth");
-const { login, register, logout, deleteAccount, addTasks, deleteTask, getUserData } = require("./controller/userFuntions");
+const { login, register, logout, deleteAccount, addTasks, deleteTask, getUserData, authenticate } = require("./controller/userFuntions");
 const {databaseconnect}=require("./database/moncon");
 const User=require("./model/user");
 const cookieparser=require("cookie-parser");

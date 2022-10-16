@@ -4,28 +4,36 @@ import {BrowserRouter as Router,Route,Routes} from 'react-router-dom'
 import { Login } from './component/login/Login';
 import Register from './component/register/Register';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { loadUser } from './Action/user';
+import { useEffect, useState } from 'react';
+import { userLoad} from './Action/user';
 
 function App() {
   const dispatch=useDispatch();
 
-  
+  const [isAuth,setAuth]=useState(false)
 
   useEffect(()=>{
-     dispatch(loadUser());
+    dispatch(userLoad())
+
   },[dispatch])
 
-  const {isAuthitication}=useSelector((state)=>state.loadUser);
+
   
-  // console.log(isAuthitication);
+
+  const {isAuthentication}=useSelector((state)=>state.loadUser);
+
+  useEffect(()=>{
+    if(!isAuth)
+    setAuth(isAuthentication)
+  },[isAuthentication,isAuth])
+  
   
 
   return (
     <Router>
       <Routes>
-        <Route path='/' element={isAuthitication?<User/>:<Login/>} />
-        <Route path='/register' element={isAuthitication?<User/>:<Register/>} />
+        <Route path='/' element={isAuth?<User/>:<Login/>} />
+        <Route path='/register' element={isAuth?<User/>:<Register/>} />
       </Routes> 
     </Router>
   );

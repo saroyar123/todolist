@@ -2,7 +2,7 @@ import React from 'react'
 import {Avatar, Button} from "@mui/material"
 import { Task } from '../task/Task'
 import { useDispatch, useSelector } from 'react-redux'
-import { addTask, loadUser } from '../../Action/user'
+import { addTask, logOutUser, userLoad } from '../../Action/user'
 import { useState } from 'react'
 
 export const User = () => {
@@ -12,14 +12,29 @@ export const User = () => {
   const [title,setTitle]=useState("");
   const [description,setDescription]=useState("");
 
+  // console.log(useSelector((state)=>state.loadUser))
+
   const {name}=useSelector((state)=>state.loadUser.user);
   const submithandlar=async(e)=>{
     e.preventDefault();
     await dispatch(addTask(title,description));
-    dispatch(loadUser());
+    dispatch(userLoad());
+  }
+
+  const logoutHandlar=async(e)=>{
+    e.preventDefault();
+    await dispatch(logOutUser());
+    dispatch(userLoad());
+    }
+
+  const deleteAccountHandlar=async(e)=>{
+
   }
 
   const {todolist}=useSelector((state)=>state.loadUser.user)
+
+  
+  
 
 
   return (
@@ -43,6 +58,7 @@ export const User = () => {
                 key={task._id}
                 title={task.title}
                 description={task.description}
+                id={task._id}
                 />  
               ))
             ):(
@@ -50,6 +66,8 @@ export const User = () => {
             )
           }
         </div>
+        <Button onClick={logoutHandlar}>LogOut</Button>
+        <Button onClick={deleteAccountHandlar}>DeleteAccount</Button>
     </div>
   )
 }

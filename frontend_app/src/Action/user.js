@@ -21,7 +21,7 @@ export const userLogin = (email, password) => async (dispatch) => {
 };
 
 // for load user
-export const loadUser = () => async (dispatch) => {
+export const userLoad = () => async (dispatch) => {
   try {
     dispatch({
       type: "loadUserRequest",
@@ -53,7 +53,7 @@ export const userRegister=(name,email,password)=>async(dispatch)=>{
 
     dispatch({
       type:"registerSuccess",
-      playload:data.message
+      playload:data.user
     })
     
   } catch (error) {
@@ -86,3 +86,55 @@ export const addTask=(title,description)=>async(dispatch)=>{
     });
   }
 }
+
+
+// log out user
+
+export const logOutUser=()=>async(dispatch)=>{
+  try {
+    dispatch({
+      type:"logOutRequest"
+    })
+    console.log("logout user call");
+    const {data}=await axios.get("/api/logout")
+    
+
+    dispatch({
+      type:"logOutSuccess",
+      playload:data.message
+    })
+
+  } catch (error) {
+    dispatch({
+      type: "logOutFailure",
+      playload: error.response.data.message,
+    });
+  }
+}
+
+
+// delete task of user
+
+export const deleteTask=(id)=>async(dispatch)=>{
+  try {
+    dispatch({
+      type:"deleteTaskRequest"
+    })
+    const {data}=await axios.delete(`/api/deleteTask/${id}`)
+    
+
+    dispatch({
+      type:"deleteTaskSuccess",
+      playload:data.message
+    })
+
+  } catch (error) {
+    dispatch({
+      type: "deleteTaskFailure",
+      playload: error.response.data.message,
+    });
+  }
+}
+
+
+

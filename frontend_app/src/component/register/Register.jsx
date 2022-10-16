@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react'
-// import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loadUser, userRegister } from '../../Action/user';
+import {  userLoad, userRegister } from '../../Action/user';
+import {Link}from "react-router-dom"
 
 function Register() {
 
@@ -15,7 +15,7 @@ function Register() {
   const submitHandel = async (e) => {
     e.preventDefault();
     await dispatch(userRegister(name, email, password));
-    dispatch(loadUser());
+    dispatch(userLoad());
 
   }
 
@@ -26,6 +26,7 @@ function Register() {
         <input type="email" placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} />
         <input type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} />
         <Button type='submit'>Register</Button>
+        <Link to={"/"}>login</Link>
       </form>
     </div>
   )
