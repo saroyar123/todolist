@@ -1,4 +1,5 @@
 import React from 'react'
+import './User.css'
 import {Avatar, Button} from "@mui/material"
 import { Task } from '../task/Task'
 import { useDispatch, useSelector } from 'react-redux'
