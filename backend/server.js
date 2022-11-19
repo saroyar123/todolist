@@ -5,16 +5,16 @@ const {databaseconnect}=require("./database/moncon");
 const User=require("./model/user");
 const cookieparser=require("cookie-parser");
 // const dotenv=require("dotenv");
-if(process.env.NODE_ENV!=="production")
-{
-    require("dotenv").config({path:"./config/config.env"});
-}
+const dotenv=require('dotenv');
+const cors=require('cors');
+
 
 databaseconnect();
 
 const app=express();
 app.use(express.json());
 app.use(cookieparser());
+app.use(cors());
 
 const router=express.Router();
 
