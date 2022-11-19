@@ -18,8 +18,12 @@ app.use(cookieparser());
 
 const router=express.Router();
 
-
-
+router.get('/',(req,res)=>{
+    res.status(200).json({
+        success:true,
+        message:"server is running"
+    })
+})
 router.post("/login",login);
 router.post("/register",register);
 router.get("/logout",Authitication,logout);
