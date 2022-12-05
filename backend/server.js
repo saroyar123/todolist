@@ -8,6 +8,7 @@ const cookieparser=require("cookie-parser");
 const dotenv=require('dotenv');
 const cors=require('cors');
 
+dotenv.config();
 
 databaseconnect();
 
