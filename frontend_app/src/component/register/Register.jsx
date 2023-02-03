@@ -1,8 +1,9 @@
-import { Button } from '@mui/material';
+import { Button} from '@mui/material';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import {  userLoad, userRegister } from '../../Action/user';
-import {Link}from "react-router-dom"
+import { userLoad, userRegister, userAuth } from '../../Action/user';
+import { Link } from "react-router-dom";
+import "./Register.css"
 
 function Register() {
 
@@ -15,21 +16,23 @@ function Register() {
   const submitHandel = async (e) => {
     e.preventDefault();
     await dispatch(userRegister(name, email, password));
-    dispatch(userLoad());
+    await dispatch(userLoad());
+    dispatch(userAuth())
+
 
   }
 
   return (
-    <div>
-      <form onSubmit={submitHandel}>
-        <input type="text" placeholder='name' value={name} onChange={(e) => setName(e.target.value)} />
-        <input type="email" placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-        <Button type='submit'>Register</Button>
-        <Link to={"/"}>login</Link>
+    <div >
+      <form onSubmit={submitHandel} className="formClass">
+        <input className='formItem' type="text" placeholder='name' value={name} onChange={(e) => setName(e.target.value)} />
+        <input className='formItem' type="email" placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input className='formItem' type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Button className='formItem' variant="contained" type='submit'>Register</Button>
+        <Link className='formItem link' to={"/"}>login</Link>
       </form>
     </div>
   )
 }
 
-export default Register
+export default Register;

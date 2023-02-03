@@ -41,6 +41,27 @@ export const userLoad = () => async (dispatch) => {
   }
 };
 
+// for checking auth
+export const userAuth = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "authRequest",
+    });
+
+     await axios.get("/api/getUserData");
+
+    dispatch({
+      type: "authSuccess",
+   
+    });
+  } catch (error) {
+    dispatch({
+      type: "authFailure",
+      playload: error.response.data.message,
+    });
+  }
+};
+
 
 // for register
 export const userRegister=(name,email,password)=>async(dispatch)=>{
@@ -134,6 +155,39 @@ export const deleteTask=(id)=>async(dispatch)=>{
       playload: error.response.data.message,
     });
   }
+}
+
+
+// delete user
+
+export const deleteUser=(id)=>async(dispatch)=>{
+  try {
+    dispatch({
+      type:"deleteUserRequest"
+    })
+    const {data}=await axios.delete(`/api/deleteAccount`)
+    
+
+    dispatch({
+      type:"deleteUserSuccess",
+      playload:data.message
+    })
+
+  } catch (error) {
+    dispatch({
+      type: "deleteUserFailure",
+      playload: error.response.data.message,
+    });
+  }
+}
+
+
+// call only unauth
+
+export const unAuth=()=>async(dispatch)=>{
+  dispatch({
+    type:"authFailure"
+  })
 }
 
 

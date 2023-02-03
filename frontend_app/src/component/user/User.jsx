@@ -3,7 +3,7 @@ import './User.css'
 import {Avatar, Button} from "@mui/material"
 import { Task } from '../task/Task'
 import { useDispatch, useSelector } from 'react-redux'
-import { addTask, logOutUser, userLoad } from '../../Action/user'
+import { addTask, deleteUser, logOutUser, unAuth, userLoad } from '../../Action/user'
 import { useState } from 'react'
 
 export const User = () => {
@@ -15,7 +15,7 @@ export const User = () => {
 
   // console.log(useSelector((state)=>state.loadUser))
 
-  const {name}=useSelector((state)=>state.loadUser.user);
+  
   const submithandlar=async(e)=>{
     e.preventDefault();
     await dispatch(addTask(title,description));
@@ -23,15 +23,24 @@ export const User = () => {
   }
 
   const logoutHandlar=async(e)=>{
-    e.preventDefault();
+    // e.preventDefault();
     await dispatch(logOutUser());
-    dispatch(userLoad());
+    await  dispatch(userLoad());
+    dispatch(unAuth());
+   
+    
     }
 
   const deleteAccountHandlar=async(e)=>{
+    e.preventDefault();
+    await dispatch(deleteUser());
+    await dispatch(userLoad());
+    dispatch(unAuth());
+    
+    
 
   }
-
+  const {name}=useSelector((state)=>state.loadUser.user);
   const {todolist}=useSelector((state)=>state.loadUser.user)
 
   
